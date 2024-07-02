@@ -2,6 +2,7 @@ package com.airflowboy.flow.controller;
 
 import com.airflowboy.flow.dto.AllowUserResponse;
 import com.airflowboy.flow.dto.AllowedUserResponse;
+import com.airflowboy.flow.dto.RankNumberResponse;
 import com.airflowboy.flow.dto.RegisterUserResponse;
 import com.airflowboy.flow.service.UserQueueService;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +33,15 @@ public class UserQueueController {
 
     @GetMapping("/allowed")
     public Mono<AllowedUserResponse> isAllowedUser(@RequestParam(name = "queue", defaultValue = "default") String queue,
-                                 @RequestParam(name = "user_id") Long userId) {
+                                                    @RequestParam(name = "user_id") Long userId) {
         return userQueueService.isAllowed(queue, userId)
                 .map(AllowedUserResponse::new);
+    }
+
+    @GetMapping("/rank")
+    public Mono<RankNumberResponse> getRankUser(@RequestParam(name = "queue", defaultValue = "default") String queue,
+                                                @RequestParam(name = "user_id") Long userId) {
+        return userQueueService.getRank(queue, userId)
+                .map(RankNumberResponse::new);
     }
 }
